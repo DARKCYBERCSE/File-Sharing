@@ -16,9 +16,9 @@ export default function FileUpload(){
     form.append('expire_hours', 24)
 
     try {
-      const resp = await fetch(`${API_BASE_URL}/upload`, {
-        method: 'POST',
-        body: form
+      const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL}/upload`, {
+      method: "POST",
+      body: form
       })
       const data = await resp.json()
       alert('Uploaded! Open: ' + window.location.origin + data.download_url)
