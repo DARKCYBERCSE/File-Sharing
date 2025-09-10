@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { UploadCloud } from 'lucide-react'
-import { API_BASE_URL } from '../config'   // ✅ use this
+import { API_BASE_URL } from '../config'   // ✅ correct
+
 
 export default function FileUpload() {
   const [file, setFile] = useState(null)
