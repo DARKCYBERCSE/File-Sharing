@@ -13,7 +13,7 @@ export default function FileList(){
   const [files, setFiles] = useState([])
 
   useEffect(()=> {
-    fetch('http://localhost:8000/files').then(r=>r.json()).then(data=>setFiles(data)).catch(()=>{})
+    fetch('https://file-sharing-z8q2.onrender.com').then(r=>r.json()).then(data=>setFiles(data)).catch(()=>{})
   }, [])
 
   return (
@@ -28,7 +28,7 @@ export default function FileList(){
           <li key={f.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition">
             <div className="p-2 bg-white/8 rounded-md"><FileText/></div>
             <div className="flex-1">
-              <a className="font-medium" href={`http://localhost:8000/download/${f.id}`} target="_blank" rel="noreferrer">{f.name}</a>
+              <a className="font-medium" href={`https://file-sharing-z8q2.onrender.com/download/${f.id}`} target="_blank" rel="noreferrer">{f.name}</a>
               <div className="text-xs opacity-70">{niceSize(f.size)} • Expires: {new Date(f.expire_at*1000).toLocaleString()}</div>
             </div>
             <div className="flex items-center gap-2">
