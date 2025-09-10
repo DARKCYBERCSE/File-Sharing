@@ -1,3 +1,2 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
-
-export default API_BASE_URL;
+// frontend/src/config.js
+export const API_BASE_URL = "https://file-sharing-z8q2.onrender.com"
