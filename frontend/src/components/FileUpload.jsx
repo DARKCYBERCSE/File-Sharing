@@ -2,8 +2,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { UploadCloud } from 'lucide-react'
-// ✅ NEW: use env var from Vercel
-const API_BASE = import.meta.env.VITE_API_URL
 export default function FileUpload(){
   const [file, setFile] = useState(null)
   const [progress, setProgress] = useState(0)
