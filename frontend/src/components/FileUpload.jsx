@@ -17,7 +17,7 @@ export default function FileUpload(){
     form.append('expire_hours', 24)
 
     // simple upload: no chunking
-    const resp = await fetch(`${API_BASE}/upload`, { method:'POST', body: form })
+    const resp = await fetch('https://file-sharing-z8q2.onrender.com/upload', {method: 'POST',body: form})
     const data = await resp.json()
     setLoading(false)
     alert('Uploaded! Open: ' + window.location.origin + data.download_url)
