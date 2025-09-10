@@ -5,24 +5,28 @@ import os, uuid, sqlite3, time, hashlib, secrets, io, json
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 from google.oauth2.service_account import Credentials
-
+from fastapi.middleware.cors import CORSMiddleware
 
 # ----------------------------
 # Config
 # ----------------------------
-app = FastAPI(title="File Sharing Online - Backend")
 
-# Allow frontend to connect
+
+app = FastAPI()
+
+origins = [
+    "https://file-sharing-ruby-eight.vercel.app",  # your Vercel frontend
+    "http://localhost:5173",                       # for local dev
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://file-sharing-ruby-eight.vercel.app",  # your frontend
-        "http://localhost:5173"  # for local dev with Vite
-    ],
+    allow_origins=origins,          # or ["*"] to allow all (not secure for prod)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 
 BASE_DIR = os.path.dirname(__file__)
