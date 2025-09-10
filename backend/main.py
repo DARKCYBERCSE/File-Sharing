@@ -15,11 +15,15 @@ app = FastAPI(title="File Sharing Online - Backend")
 # Allow frontend to connect
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://file-sharing-ruby-eight.vercel.app",  # your frontend
+        "http://localhost:5173"  # for local dev with Vite
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 BASE_DIR = os.path.dirname(__file__)
 DB_PATH = os.path.join(BASE_DIR, "files.db")
