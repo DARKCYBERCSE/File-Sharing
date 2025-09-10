@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { UploadCloud } from 'lucide-react'
 
+// ✅ NEW: use env var from Vercel
+const API_BASE = import.meta.env.VITE_API_URL
+
 export default function FileUpload(){
   const [file, setFile] = useState(null)
   const [progress, setProgress] = useState(0)
@@ -14,8 +17,8 @@ export default function FileUpload(){
     form.append('file', file)
     form.append('expire_hours', 24)
 
-    // simple upload: no chunking
-    const resp = await fetch('https://file-sharing-z8q2.onrender.com/upload', { method:'POST', body: form })
+    // ✅ use API_BASE instead of hardcoding
+    const resp = await fetch(`${API_BASE}/upload`, { method:'POST', body: form })
     const data = await resp.json()
     setLoading(false)
     alert('Uploaded! Open: ' + window.location.origin + data.download_url)
