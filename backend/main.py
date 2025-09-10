@@ -6,6 +6,14 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 from google.oauth2.service_account import Credentials
 from fastapi.middleware.cors import CORSMiddleware
+from flask import Flask
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": [
+    "https://file-sharing-ruby-eight.vercel.app",
+    "http://localhost:5173"
+]}})
 
 # ----------------------------
 # Config
