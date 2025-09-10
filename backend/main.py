@@ -6,6 +6,7 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 from google.oauth2.service_account import Credentials
 
+
 # ----------------------------
 # Config
 # ----------------------------
@@ -31,6 +32,10 @@ FOLDER_ID = "1ACYVSr9fOVWb2o3nehEytyxB7ZEF1-ip"  # replace with your Drive folde
 service_account_info = json.loads(os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON"))
 creds = Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
 drive_service = build("drive", "v3", credentials=creds)
+
+@app.get("/")
+async def root():
+    return {"message": "File Sharing API is running", "endpoints": ["/upload", "/share", "/files", "/download/{id}", "/s/{token}", "/health"]}
 
 # ----------------------------
 # SQLite setup
