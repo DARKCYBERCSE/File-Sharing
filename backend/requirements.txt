@@ -8,6 +8,5 @@ google-api-python-client==2.129.0
 google-auth==2.29.0
 google-auth-oauthlib==1.2.0
 
-# Database
-sqlite3-binary ; sys_platform != "win32"
+
 
