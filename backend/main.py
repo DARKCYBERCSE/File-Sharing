@@ -5,42 +5,32 @@ import os, uuid, sqlite3, time, hashlib, secrets, io, json
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 from google.oauth2.service_account import Credentials
-from fastapi.middleware.cors import CORSMiddleware
-from flask import Flask
-from flask_cors import CORS
-
-app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": [
-    "https://file-sharing-ruby-eight.vercel.app",
-    "http://localhost:5173"
-]}})
 
 # ----------------------------
-# Config
+# FastAPI setup
 # ----------------------------
-
-
 app = FastAPI()
 
+# Allowed origins (your Vercel frontend + localhost dev)
 origins = [
-    "https://file-sharing-ruby-eight.vercel.app",  # your Vercel frontend
-    "http://localhost:5173",                       # for local dev
+    "https://file-sharing-ruby-eight.vercel.app",  # production frontend
+    "http://localhost:5173",                       # local dev
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,          # or ["*"] to allow all (not secure for prod)
+    allow_origins=origins,          # or ["*"] for all origins (not secure in prod)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
-
+# ----------------------------
+# Config
+# ----------------------------
 BASE_DIR = os.path.dirname(__file__)
 DB_PATH = os.path.join(BASE_DIR, "files.db")
 
-# Google Drive API setup
 SCOPES = ["https://www.googleapis.com/auth/drive.file"]
 FOLDER_ID = "1ACYVSr9fOVWb2o3nehEytyxB7ZEF1-ip"  # replace with your Drive folder ID
 
@@ -49,12 +39,8 @@ service_account_info = json.loads(os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON"))
 creds = Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
 drive_service = build("drive", "v3", credentials=creds)
 
-@app.get("/")
-async def root():
-    return {"message": "File Sharing API is running", "endpoints": ["/upload", "/share", "/files", "/download/{id}", "/s/{token}", "/health"]}
-
 # ----------------------------
-# SQLite setup
+# Database setup
 # ----------------------------
 conn = sqlite3.connect(DB_PATH, check_same_thread=False)
 cur = conn.cursor()
@@ -83,6 +69,13 @@ def now_ts():
 # ----------------------------
 # Endpoints
 # ----------------------------
+
+@app.get("/")
+async def root():
+    return {
+        "message": "File Sharing API is running",
+        "endpoints": ["/upload", "/share", "/files", "/download/{id}", "/s/{token}", "/health"]
+    }
 
 @app.post("/upload")
 async def upload(file: UploadFile, expire_hours: int = Form(24)):
