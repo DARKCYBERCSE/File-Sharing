@@ -33,7 +33,7 @@ export default function FileList(){
             </div>
             <div className="flex items-center gap-2">
               <a title="Create share link" className="text-sm underline cursor-pointer">Share</a>
-              <a href={`http://localhost:8000/download/${f.id}`} target="_blank" rel="noreferrer" className="p-2 rounded-md hover:bg-white/5">
+              <a href={`https://file-sharing-z8q2.onrender.com/download/${f.id}`} target="_blank" rel="noreferrer" className="p-2 rounded-md hover:bg-white/5">
                 <Link2 />
               </a>
             </div>
