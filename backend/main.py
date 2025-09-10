@@ -1,15 +1,10 @@
 from fastapi import FastAPI, UploadFile, Form, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-import os, uuid, sqlite3, time, hashlib, secrets, io
+import os, uuid, sqlite3, time, hashlib, secrets, io, json
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 from google.oauth2.service_account import Credentials
-import json
-from google.oauth2.service_account import Credentials
-
-service_account_info = json.loads(os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON"))
-creds = Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
 
 # ----------------------------
 # Config
@@ -29,12 +24,13 @@ BASE_DIR = os.path.dirname(__file__)
 DB_PATH = os.path.join(BASE_DIR, "files.db")
 
 # Google Drive API setup
-SCOPES = ['https://www.googleapis.com/auth/drive.file']
-SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, "service_account.json")  # download from Google Cloud
+SCOPES = ["https://www.googleapis.com/auth/drive.file"]
 FOLDER_ID = "1ACYVSr9fOVWb2o3nehEytyxB7ZEF1-ip"  # replace with your Drive folder ID
 
-creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-drive_service = build('drive', 'v3', credentials=creds)
+# Load service account credentials from Render environment variable
+service_account_info = json.loads(os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON"))
+creds = Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
+drive_service = build("drive", "v3", credentials=creds)
 
 # ----------------------------
 # SQLite setup
