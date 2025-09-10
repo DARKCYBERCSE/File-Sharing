@@ -1,7 +1,8 @@
-
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { UploadCloud } from 'lucide-react'
+import API_BASE_URL from '../config'
+
 export default function FileUpload(){
   const [file, setFile] = useState(null)
   const [progress, setProgress] = useState(0)
@@ -14,11 +15,18 @@ export default function FileUpload(){
     form.append('file', file)
     form.append('expire_hours', 24)
 
-    // simple upload: no chunking
-    const resp = await fetch('https://file-sharing-z8q2.onrender.com/upload', {method: 'POST',body: form})
-    const data = await resp.json()
-    setLoading(false)
-    alert('Uploaded! Open: ' + window.location.origin + data.download_url)
+    try {
+      const resp = await fetch(`${API_BASE_URL}/upload`, {
+        method: 'POST',
+        body: form
+      })
+      const data = await resp.json()
+      alert('Uploaded! Open: ' + window.location.origin + data.download_url)
+    } catch (err) {
+      alert("Upload failed: " + err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -29,7 +37,7 @@ export default function FileUpload(){
         </div>
         <div className="flex-1">
           <h3 className="text-xl font-semibold">Drag & Drop or Click to Upload</h3>
-          <p className="text-sm opacity-80">Max file size: depends on your machine (this demo uses local storage)</p>
+          <p className="text-sm opacity-80">Max file size: depends on your machine (this demo uses Google Drive)</p>
         </div>
       </div>
 
@@ -38,7 +46,11 @@ export default function FileUpload(){
       </div>
 
       <div className="mt-4 flex items-center gap-3">
-        <button onClick={handleUpload} className="px-4 py-2 rounded-lg bg-white text-brand1 font-bold shadow hover:scale-105 transform transition">
+        <button
+          onClick={handleUpload}
+          disabled={loading}
+          className="px-4 py-2 rounded-lg bg-white text-brand1 font-bold shadow hover:scale-105 transform transition"
+        >
           {loading ? 'Uploading...' : 'Upload'}
         </button>
         <div className="flex-1">
